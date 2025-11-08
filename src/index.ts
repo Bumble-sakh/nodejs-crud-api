@@ -1,10 +1,13 @@
-import { argv } from 'process';
-import os from 'os';
-import cluster from 'cluster';
-import { runServer } from './server';
-import { runBalancer } from './balancer';
+import { argv } from "process";
+import os from "os";
+import cluster from "cluster";
+import dotenv from "dotenv";
+import { runServer } from "./server";
+import { runBalancer } from "./balancer";
 
-const port = 4000; //TODO change to .env
+dotenv.config();
+
+const port = Number(process.env.PORT) || 4000;
 
 const once = () => {
   runServer(port);
@@ -25,7 +28,7 @@ const multi = () => {
   }
 };
 
-if (argv[2] === '--multi') {
+if (argv[2] === "--multi") {
   multi();
 } else {
   once();
