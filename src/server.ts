@@ -259,4 +259,6 @@ export const runServer = (port: number) => {
     console.log("-err1-");
     console.log(error);
   });
+
+  return server;
 };

@@ -23,3 +23,9 @@ npm run start:prod
 ```
 npm run start:multi
 ```
+
+### 💡Start tests:
+
+```
+npm run test
+```

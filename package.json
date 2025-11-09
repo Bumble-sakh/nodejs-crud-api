@@ -8,8 +8,10 @@
     "dev": "nodemon",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
+    "start:dev": "npm run dev",
     "start:prod": "npm run build:prod & node dist/index.js",
-    "start:multi": "npm run build:prod & node dist/index.js --multi"
+    "start:multi": "npm run build:prod & node dist/index.js --multi",
+    "test": "npm run build:prod && tsc src/tests/index.ts --outDir dist --module commonjs --target es2020 --esModuleInterop --skipLibCheck && node dist/tests/index.js"
   },
   "repository": {
     "type": "git",
