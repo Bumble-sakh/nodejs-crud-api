@@ -1,6 +1,6 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { Methods } from './constants';
-import { store, UserData } from './store/store';
+import { store, UserData, syncStore } from './store/store';
 import { isUserDataValid } from './helpers';
 import { v4 as uuid, validate as idValidate } from 'uuid';
 
@@ -78,13 +78,14 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
                   const [user] = store.splice(index, 1);
                   const newUser = Object.assign(user, userData);
                   store.push(newUser);
+                  syncStore({ type: 'UPDATE', user: newUser });
 
                   res.setHeader('Content-Type', 'application/json');
                   res.writeHead(200);
                   res.end(
                     JSON.stringify({
                       code: 200,
-                      data: user,
+                      data: newUser,
                       message: 'OK',
                     })
                   );
@@ -128,6 +129,7 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
               if (store.find((user) => user.id === id)) {
                 const index = store.findIndex((user) => user.id === id);
                 store.splice(index, 1);
+                syncStore({ type: 'DELETE', id });
 
                 res.setHeader('Content-Type', 'application/json');
                 res.writeHead(204);
@@ -175,6 +177,7 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
               if (isUserDataValid(userData)) {
                 const user = { ...userData, id: uuid() };
                 store.push(user);
+                syncStore({ type: 'ADD', user });
 
                 res.setHeader('Content-Type', 'application/json');
                 res.writeHead(201);
