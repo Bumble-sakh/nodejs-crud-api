@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "start:prod": "npm run build:prod & node dist/index.js",
     "start:multi": "npm run build:prod & node dist/index.js --multi"
